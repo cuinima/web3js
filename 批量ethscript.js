@@ -64,6 +64,7 @@ async function main(start=1000,times=20,rpc,privateKey){
  * times 数量 递增
  * rpc rpc地址
  * privateKey 私钥
+ * 修改 text 铭文格式
  */
 main(start=1000,times=10,rpc=`https://polygon-mumbai.blockpi.network/v1/rpc/public`,privateKey=`填写私钥`)
 
