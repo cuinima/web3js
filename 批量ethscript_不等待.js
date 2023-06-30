@@ -108,24 +108,31 @@ async function send(wallet,provider,inputdata,nonce){
 async function main(start=1000,times=20,rpc,privateKey){
 
  
-  //手动指定起始位置和数量
-  let script_list = await get_ethscript(start,times);
-  //let script_list = await get_distance();
-  //设置rpc连接
-  const provider = await new ethers.providers.JsonRpcProvider(rpc);
-  console.log(`${await provider.getBlockNumber()}`)
-  const wallet =await new ethers.Wallet(privateKey, provider);
-  let nonce = await provider.getTransactionCount(wallet.address, 'latest');
-    for(let i = 0;i<times;i++){
+    //手动指定起始位置和数量
+    let script_list = await get_ethscript(start,times);
+    //let script_list = await get_distance();
+    //设置rpc连接
+    const provider = await new ethers.providers.JsonRpcProvider(rpc);
+    console.log(`${await provider.getBlockNumber()}`)
+    const wallet =await new ethers.Wallet(privateKey, provider);
+    let nonce = await provider.getTransactionCount(wallet.address, 'latest');
+    let index = 0;
+    let intervalId = setInterval(async function() {
         try{
-            
-            console.log(`${i},${script_list[i]}`);
-            await send(wallet,provider,script_list[i],nonce);
-            nonce += 1;
+            if(index<times){
+                console.log(`${index},${script_list[index]}`);
+                await send(wallet,provider,script_list[index],nonce+index);
+                index += 1;
+            }else{
+                clearInterval(intervalId);
+            }
+        
         }catch(error){
-            console.error(error);
+        console.error(error);
         }
-    }
+    //无视线程阻塞 2.5s发送一个交易
+    },  2500 );
+
     console.log("结束");
 
 }

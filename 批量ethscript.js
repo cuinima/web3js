@@ -45,9 +45,10 @@ async function main(start=1000,times=20,rpc,privateKey){
   const provider = await new ethers.providers.JsonRpcProvider(rpc);
   console.log(`${await provider.getBlockNumber()}`)
   const wallet =await new ethers.Wallet(privateKey, provider);
+  let nonce = await provider.getTransactionCount(wallet.address, 'latest');
     for(let i = 0;i<times;i++){
         try{
-            let nonce = await provider.getTransactionCount(wallet.address, 'latest');
+            
             console.log(`${i},${script_list[i]}`);
             await send(wallet,provider,script_list[i],nonce);
             nonce += 1;
