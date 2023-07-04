@@ -121,7 +121,7 @@ async function main(start=1000,times=20,rpc,privateKey){
         try{
             if(index<times){
                 console.log(`${index},${script_list[index]}`);
-                await send(wallet,provider,script_list[index],nonce+index);
+                send(wallet,provider,script_list[index],nonce+index);
                 index += 1;
             }else{
                 clearInterval(intervalId);
